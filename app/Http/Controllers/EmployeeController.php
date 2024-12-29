@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -9,24 +10,26 @@ use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
+use PDF;
+
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $pageTitle = 'Employee List';
-
-
-        $employees = Employee::all();
-
-        return view('employee.index', [
-            'pageTitle' => $pageTitle,
-            'employees' => $employees
-        ]);
-    }
+    
+     public function index()
+     {
+      $pageTitle = 'Employee List';
+      confirmDelete();
+      $positions = Position::all();
+      return view('employee.index',[
+      'pageTitle' => $pageTitle,
+      'positions' => $positions
+      ]);
+     }
 
 
     public function create()
@@ -86,6 +89,9 @@ class EmployeeController extends Controller
         }
 
         $employee->save();
+
+        Alert::success('Added Successfully', 'Employee Data Added Successfully.');
+
 
         return redirect()->route('employees.index');
     }
@@ -170,6 +176,9 @@ class EmployeeController extends Controller
 
         $employee->save();
 
+        Alert::success('Changed Successfully', 'Employee Data Changed 
+Successfully.');
+
         return redirect()->route('employees.index')->with('success', 'Data employee berhasil diperbarui.');
     }
 
@@ -197,6 +206,10 @@ class EmployeeController extends Controller
 
 
             $employee->delete();
+
+            Alert::success('Deleted Successfully', 'Employee Data Deleted 
+Successfully.');
+
 
             return redirect()->route('employees.index')->with('success', 'Data employee dan file berhasil dihapus.');
         } catch (\Exception $e) {
@@ -244,4 +257,5 @@ class EmployeeController extends Controller
 
         return redirect()->back()->with('error', 'Data employee tidak ditemukan');
     }
+    
 }

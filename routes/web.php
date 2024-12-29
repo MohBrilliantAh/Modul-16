@@ -31,8 +31,10 @@
         'downloadFile'
     ])->name('employees.downloadFile');
 
+    Route::get('exportExcel', [EmployeeController::class, 'exportExcel'])->name('employees.exportExcel');
 
-
+    Route::get('exportPdf', [EmployeeController::class, 'exportPdf'])->name('employees.exportPdf');
+    
     // Route::get('/local-disk', function () {
     //     Storage::disk('local')->put('local-example.txt', 'This is local example content');
     //     return asset('storage/local-example.txt');
